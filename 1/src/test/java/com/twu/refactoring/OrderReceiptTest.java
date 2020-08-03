@@ -37,5 +37,4 @@ public class OrderReceiptTest {
         assertThat(output, containsString("Sales Tax\t6.5"));
         assertThat(output, containsString("Total Amount\t71.5"));
     }
-
 }

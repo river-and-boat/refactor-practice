@@ -27,4 +27,9 @@ public class LineItem {
     double totalAmount() {
         return p * qty;
     }
+
+	@Override
+	public String toString() {
+		return  desc + '\t' + p + '\t' + qty + '\t' + totalAmount() + '\n';
+	}
 }
