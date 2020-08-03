@@ -1,29 +1,14 @@
 package com.twu.refactoring;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
-
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Optional;
 
 public class Customer {
 
 	private String name;
 	private ArrayList<Rental> rentalList = new ArrayList<Rental>();
 
-	private static final int REGULAR_ADDITION_DAYS_RENTED = 2;
-
-	private static final int CHILDRENS_ADDITION_DAYS_RENTED = 3;
-
 	private static final int NEW_RELEASE_ADDITION_DAYS_RENTED = 1;
-
-	private static final double REGULAR_ADDITION_PRICE = 1.5;
-
-	private static final double CHILDRENS_ADDITION_PRICE = 1.5;
-
-	private static final double CHILDRENS_NORMAL_PRICE = 1.5;
-
-	private static final double NEW_RELEASE_NORMAL_PRICE = 3;
 
 	public Customer(String name) {
 		this.name = name;
@@ -51,12 +36,12 @@ public class Customer {
 			Rental each = rentals.next();
 
 			// determine amounts for each line
-			thisAmount += each.getMovie().getAmount(each.getDaysRented());
-
+			thisAmount += each.getMovie().getMovieTypeEnum().getAmount(each.getDaysRented());
+			
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
-			if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE)
+			if ((each.getMovie().getMovieTypeEnum().equals(MovieTypeEnum.NewRelease))
 					&& each.getDaysRented() > NEW_RELEASE_ADDITION_DAYS_RENTED)
 				frequentRenterPoints++;
 

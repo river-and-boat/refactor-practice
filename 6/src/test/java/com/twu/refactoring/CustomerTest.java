@@ -19,11 +19,11 @@ public class CustomerTest {
 
     private Customer dinsdale = new Customer("Dinsdale Pirhana");
 
-    private Movie python = new RegularMovie("Monty Python and the Holy Grail", Movie.REGULAR);
-    private Movie ran = new RegularMovie("Ran", Movie.REGULAR);
-    private Movie la = new NewReleaseMovie("LA Confidential", Movie.NEW_RELEASE);
-    private Movie trek = new NewReleaseMovie("Star Trek 13.2", Movie.NEW_RELEASE);
-    private Movie wallace = new ChildrensMovie("Wallace and Gromit", Movie.CHILDRENS);
+    private Movie python = new Movie("Monty Python and the Holy Grail", MovieTypeEnum.Regular);
+    private Movie ran = new Movie("Ran", MovieTypeEnum.Regular);
+    private Movie la = new Movie("LA Confidential", MovieTypeEnum.NewRelease);
+    private Movie trek = new Movie("Star Trek 13.2", MovieTypeEnum.NewRelease);
+    private Movie wallace = new Movie("Wallace and Gromit", MovieTypeEnum.Childrens);
 
     @BeforeEach
     public void setUpData() {
@@ -47,16 +47,8 @@ public class CustomerTest {
 
     @Test
     public void shouldOutputChangedStatement() throws Exception {
-        //la.setPriceCode(Movie.REGULAR);
-        la = new NewReleaseMovie("LA Confidential", Movie.REGULAR);
-        dinsdale.replaceMovie(2, la);
+        la.setMovieTypeEnum(MovieTypeEnum.Regular);
     }
-
-    /*
-    public void testHtml() throws Exception {
-        verifyOutput("1st Output", "outputHtml", dinsdale.htmlStatement());
-    }
-    */
 
     protected void verifyOutput(String actualValue, String fileName) throws IOException {
         String filePath = getClass().getClassLoader().getResource(GOLD_PATH + fileName).getPath();
