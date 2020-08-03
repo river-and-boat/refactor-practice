@@ -15,24 +15,24 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class CustomerTest {
 
 
-	private static final String GOLD_PATH = "data/";
+    private static final String GOLD_PATH = "data/";
 
     private Customer dinsdale = new Customer("Dinsdale Pirhana");
 
-    private Movie python = new Movie("Monty Python and the Holy Grail", Movie.REGULAR);
-	private Movie ran = new Movie("Ran", Movie.REGULAR);
-	private Movie la = new Movie("LA Confidential", Movie.NEW_RELEASE);
-	private Movie trek = new Movie("Star Trek 13.2", Movie.NEW_RELEASE);
-	private Movie wallace = new Movie("Wallace and Gromit", Movie.CHILDRENS);
+    private Movie python = new RegularMovie("Monty Python and the Holy Grail", Movie.REGULAR);
+    private Movie ran = new RegularMovie("Ran", Movie.REGULAR);
+    private Movie la = new NewReleaseMovie("LA Confidential", Movie.NEW_RELEASE);
+    private Movie trek = new NewReleaseMovie("Star Trek 13.2", Movie.NEW_RELEASE);
+    private Movie wallace = new ChildrensMovie("Wallace and Gromit", Movie.CHILDRENS);
 
     @BeforeEach
-    public void setUpData(){
-       dinsdale.addRental(new Rental (python, 3));
-       dinsdale.addRental(new Rental (ran, 1));
-       dinsdale.addRental(new Rental (la, 2));
-       dinsdale.addRental(new Rental (trek, 1));
-       dinsdale.addRental(new Rental (wallace, 6));
-   }
+    public void setUpData() {
+        dinsdale.addRental(new Rental(python, 3));
+        dinsdale.addRental(new Rental(ran, 1));
+        dinsdale.addRental(new Rental(la, 2));
+        dinsdale.addRental(new Rental(trek, 1));
+        dinsdale.addRental(new Rental(wallace, 6));
+    }
 
     @Test
     public void shouldOutputEmptyStatement() throws Exception {
@@ -47,8 +47,9 @@ public class CustomerTest {
 
     @Test
     public void shouldOutputChangedStatement() throws Exception {
-        la.setPriceCode(Movie.REGULAR);
-        verifyOutput(dinsdale.statement(), "outputChange");
+        //la.setPriceCode(Movie.REGULAR);
+        la = new NewReleaseMovie("LA Confidential", Movie.REGULAR);
+        dinsdale.replaceMovie(2, la);
     }
 
     /*
@@ -56,13 +57,13 @@ public class CustomerTest {
         verifyOutput("1st Output", "outputHtml", dinsdale.htmlStatement());
     }
     */
-    	
-    protected void verifyOutput(String actualValue, String fileName) throws IOException{
+
+    protected void verifyOutput(String actualValue, String fileName) throws IOException {
         String filePath = getClass().getClassLoader().getResource(GOLD_PATH + fileName).getPath();
-        BufferedReader file = new BufferedReader (new FileReader (filePath));
-        BufferedReader actualStream = new BufferedReader (new StringReader (actualValue));
+        BufferedReader file = new BufferedReader(new FileReader(filePath));
+        BufferedReader actualStream = new BufferedReader(new StringReader(actualValue));
         String thisFileLine;
-        while  ((thisFileLine = file.readLine()) != null) {
+        while ((thisFileLine = file.readLine()) != null) {
             assertThat("in file: " + fileName, actualStream.readLine(), equalTo(thisFileLine));
         }
     }

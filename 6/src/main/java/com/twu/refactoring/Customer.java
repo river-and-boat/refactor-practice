@@ -1,12 +1,29 @@
 package com.twu.refactoring;
 
+import org.omg.CORBA.PRIVATE_MEMBER;
+
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Optional;
 
 public class Customer {
 
 	private String name;
 	private ArrayList<Rental> rentalList = new ArrayList<Rental>();
+
+	private static final int REGULAR_ADDITION_DAYS_RENTED = 2;
+
+	private static final int CHILDRENS_ADDITION_DAYS_RENTED = 3;
+
+	private static final int NEW_RELEASE_ADDITION_DAYS_RENTED = 1;
+
+	private static final double REGULAR_ADDITION_PRICE = 1.5;
+
+	private static final double CHILDRENS_ADDITION_PRICE = 1.5;
+
+	private static final double CHILDRENS_NORMAL_PRICE = 1.5;
+
+	private static final double NEW_RELEASE_NORMAL_PRICE = 3;
 
 	public Customer(String name) {
 		this.name = name;
@@ -14,6 +31,10 @@ public class Customer {
 
 	public void addRental(Rental arg) {
 		rentalList.add(arg);
+	}
+
+	public void replaceMovie(int index, Movie arg) {
+		rentalList.get(index).setMovie(arg);
 	}
 
 	public String getName() {
@@ -30,28 +51,13 @@ public class Customer {
 			Rental each = rentals.next();
 
 			// determine amounts for each line
-			switch (each.getMovie().getPriceCode()) {
-			case Movie.REGULAR:
-				thisAmount += 2;
-				if (each.getDaysRented() > 2)
-					thisAmount += (each.getDaysRented() - 2) * 1.5;
-				break;
-			case Movie.NEW_RELEASE:
-				thisAmount += each.getDaysRented() * 3;
-				break;
-			case Movie.CHILDRENS:
-				thisAmount += 1.5;
-				if (each.getDaysRented() > 3)
-					thisAmount += (each.getDaysRented() - 3) * 1.5;
-				break;
-
-			}
+			thisAmount += each.getMovie().getAmount(each.getDaysRented());
 
 			// add frequent renter points
 			frequentRenterPoints++;
 			// add bonus for a two day new release rental
 			if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE)
-					&& each.getDaysRented() > 1)
+					&& each.getDaysRented() > NEW_RELEASE_ADDITION_DAYS_RENTED)
 				frequentRenterPoints++;
 
 			// show figures for this rental

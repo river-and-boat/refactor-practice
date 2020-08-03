@@ -18,4 +18,8 @@ public class Rental {
     public Movie getMovie() {
         return movie;
     }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
 }
